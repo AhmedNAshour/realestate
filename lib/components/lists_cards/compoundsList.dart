@@ -28,6 +28,11 @@ class _CompoundsListState extends State<CompoundsList> {
     List<Compound> compounds = Provider.of<List<Compound>>(context) ?? [];
     Size size = MediaQuery.of(context).size;
 
+    if (compounds.length == 0) {
+      return Center(
+          child: Text('Unfortunately , no matching compounds exist :/'));
+    }
+
     compounds.sort((a, b) {
       var aTitle = a.name; //before -> var adate = a.expiry;
       var bTitle = b.name; //before -> var bdate = b.expiry;

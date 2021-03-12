@@ -4,12 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:realestate/components/forms/rounded_button..dart';
 import 'package:realestate/components/forms/rounded_input_field.dart';
 import 'package:realestate/components/forms/text_field_container.dart';
 import 'package:realestate/components/offers-carousel.dart';
-import 'package:realestate/models/user.dart';
 import 'package:realestate/screens/shared/loading.dart';
 import 'package:realestate/services/database.dart';
 import 'dart:io';
@@ -192,6 +190,7 @@ class _AdminAddCompoundState extends State<AdminAddCompound> {
                                         : null,
                               ),
                               RoundedInputField(
+                                textInputType: TextInputType.number,
                                 obsecureText: false,
                                 icon: FontAwesomeIcons.pen,
                                 hintText: 'Installement Plan',
@@ -203,6 +202,7 @@ class _AdminAddCompoundState extends State<AdminAddCompound> {
                                     : null,
                               ),
                               RoundedInputField(
+                                textInputType: TextInputType.number,
                                 obsecureText: false,
                                 icon: FontAwesomeIcons.ruler,
                                 hintText: 'Available Unit Areas',
@@ -285,17 +285,20 @@ class _AdminAddCompoundState extends State<AdminAddCompound> {
                                           .updateCompoundData(
                                         name: name,
                                         imagesURLs: imagesURLs,
-                                        meterPrice: meterPrice,
+                                        meterPrice: int.parse(meterPrice),
                                         deliveryDate: deliveryDate,
                                         unitTypes: value,
                                         availableUnitAreas: availableUnitAreas,
-                                        installementPlan: installementPlan,
+                                        installementPlan:
+                                            int.parse(installementPlan),
                                         description: description,
                                         latitude: locationData['latitude'],
                                         longitude: locationData['longitude'],
                                         governate: locationData['govName'],
                                         district: locationData['districtName'],
                                         area: locationData['areaName'],
+                                        status: 'active',
+                                        highlighted: true,
                                       );
 
                                       if (result == null) {

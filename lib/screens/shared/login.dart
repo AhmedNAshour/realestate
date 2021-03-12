@@ -34,81 +34,85 @@ class _LoginState extends State<Login> {
         ? Loading()
         : Center(
             child: SingleChildScrollView(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    RoundedInputField(
-                      labelText: 'Email Address',
-                      icon: Icons.email,
-                      obsecureText: false,
-                      hintText: 'Email',
-                      onChanged: (val) {
-                        setState(() => email = val);
-                      },
-                      validator: (val) => val.isEmpty ? 'Enter an email' : null,
-                    ),
-                    RoundedInputField(
-                      labelText: 'Password',
-                      obsecureText: true,
-                      icon: Icons.lock,
-                      hintText: 'Password',
-                      onChanged: (val) {
-                        setState(() => password = val);
-                      },
-                      validator: (val) => val.length < 6
-                          ? ' Enter a password 6+ chars long '
-                          : null,
-                    ),
-                    Container(
-                      width: size.width * 0.8,
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: InkWell(
-                          onTap: () async {
-                            // await _auth.signOut();
-                            // Navigator.pushNamed(
-                            //     context, ResetPassword.id);
-                          },
-                          child: Text(
-                            'Forgot Password?',
-                            style: TextStyle(
-                              color: kPrimaryColor,
-                              fontSize: size.height * 0.02,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: size.width * 0.04),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      RoundedInputField(
+                        labelText: 'Email Address',
+                        icon: Icons.email,
+                        obsecureText: false,
+                        hintText: 'Email',
+                        onChanged: (val) {
+                          setState(() => email = val);
+                        },
+                        validator: (val) =>
+                            val.isEmpty ? 'Enter an email' : null,
+                      ),
+                      RoundedInputField(
+                        labelText: 'Password',
+                        obsecureText: true,
+                        icon: Icons.lock,
+                        hintText: 'Password',
+                        onChanged: (val) {
+                          setState(() => password = val);
+                        },
+                        validator: (val) => val.length < 6
+                            ? ' Enter a password 6+ chars long '
+                            : null,
+                      ),
+                      Container(
+                        width: size.width * 0.8,
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: InkWell(
+                            onTap: () async {
+                              // await _auth.signOut();
+                              // Navigator.pushNamed(
+                              //     context, ResetPassword.id);
+                            },
+                            child: Text(
+                              'Forgot Password?',
+                              style: TextStyle(
+                                color: kPrimaryColor,
+                                fontSize: size.height * 0.02,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: size.height * 0.03,
-                    ),
-                    RoundedButton(
-                      text: 'SIGN IN',
-                      press: () async {
-                        if (_formKey.currentState.validate()) {
-                          print(email + ' ' + password);
-                          setState(() {
-                            loading = true;
-                          });
-                          dynamic result = await _auth
-                              .signInWithEmailAndPassword(email, password);
-                          if (result == null) {
+                      SizedBox(
+                        height: size.height * 0.03,
+                      ),
+                      RoundedButton(
+                        text: 'SIGN IN',
+                        press: () async {
+                          if (_formKey.currentState.validate()) {
+                            print(email + ' ' + password);
                             setState(() {
-                              error = 'could not sign in';
-                              loading = false;
+                              loading = true;
                             });
-                          } else {
-                            Navigator.pop(context);
+                            dynamic result = await _auth
+                                .signInWithEmailAndPassword(email, password);
+                            if (result == null) {
+                              setState(() {
+                                error = 'could not sign in';
+                                loading = false;
+                              });
+                            } else {
+                              Navigator.pop(context);
+                            }
                           }
-                        }
-                      },
-                    ),
-                    Text(
-                      error,
-                      style: TextStyle(color: Colors.red, fontSize: 14),
-                    ),
-                  ],
+                        },
+                      ),
+                      Text(
+                        error,
+                        style: TextStyle(color: Colors.red, fontSize: 14),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

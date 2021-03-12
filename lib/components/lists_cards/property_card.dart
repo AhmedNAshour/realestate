@@ -202,7 +202,7 @@ class _PropertyCardState extends State<PropertyCard> {
                 child: Container(
                   padding: EdgeInsets.all(width * 0.03),
                   height: height * 0.15,
-                  width: width * 0.84,
+                  width: width * 0.88,
                   // width: double.infinity,
                   decoration: BoxDecoration(
                     color: kPrimaryLightColor,

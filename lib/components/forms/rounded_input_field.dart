@@ -11,6 +11,7 @@ class RoundedInputField extends StatelessWidget {
     this.validator,
     this.obsecureText,
     this.labelText,
+    this.textInputType,
   }) : super(key: key);
 
   final String hintText;
@@ -19,11 +20,14 @@ class RoundedInputField extends StatelessWidget {
   final FormFieldValidator validator;
   final bool obsecureText;
   final String labelText;
+  final TextInputType textInputType;
 
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
       child: TextFormField(
+        keyboardType: textInputType,
+        autofocus: true,
         obscureText: obsecureText,
         validator: validator,
         onChanged: onChanged,

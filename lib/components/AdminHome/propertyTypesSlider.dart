@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:realestate/constants.dart';
 import 'package:realestate/screens/shared/properties_search.dart';
 
-class PropertyTypesSlides extends StatelessWidget {
-  PropertyTypesSlides({
+class PropertyTypesSlider extends StatelessWidget {
+  PropertyTypesSlider({
     Key key,
   }) : super(key: key);
 

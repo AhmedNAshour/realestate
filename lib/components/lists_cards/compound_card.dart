@@ -94,7 +94,7 @@ class _CompoundCardState extends State<CompoundCard> {
         child: Container(
           padding: EdgeInsets.all(width * 0.02),
           height: height * 0.3,
-          width: width * 0.88,
+          width: width * 1,
           decoration: BoxDecoration(
             color: kPrimaryColor,
             image: DecorationImage(
@@ -115,10 +115,12 @@ class _CompoundCardState extends State<CompoundCard> {
               ),
               Positioned(
                 bottom: 0,
+                left: width * 0.01,
+                right: width * 0.01,
                 child: Container(
                   padding: EdgeInsets.all(width * 0.03),
                   // height: height * 0.1,
-                  width: width * 0.84,
+                  width: width * 0.85,
                   // width: double.infinity,
                   decoration: BoxDecoration(
                     color: kPrimaryLightColor,

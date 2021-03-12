@@ -286,6 +286,7 @@ class _AddResaleState extends State<AddResale> {
                                           : null,
                                     ),
                                     RoundedInputField(
+                                      textInputType: TextInputType.number,
                                       obsecureText: false,
                                       icon: FontAwesomeIcons.moneyBill,
                                       hintText: listingType == 1
@@ -300,6 +301,7 @@ class _AddResaleState extends State<AddResale> {
                                           : null,
                                     ),
                                     RoundedInputField(
+                                      textInputType: TextInputType.number,
                                       obsecureText: false,
                                       icon: FontAwesomeIcons.bed,
                                       hintText: 'Number of bedrooms',
@@ -313,6 +315,7 @@ class _AddResaleState extends State<AddResale> {
                                           : null,
                                     ),
                                     RoundedInputField(
+                                      textInputType: TextInputType.number,
                                       obsecureText: false,
                                       icon: FontAwesomeIcons.bath,
                                       hintText: 'Number of bathrooms',
@@ -326,6 +329,7 @@ class _AddResaleState extends State<AddResale> {
                                           : null,
                                     ),
                                     RoundedInputField(
+                                      textInputType: TextInputType.number,
                                       obsecureText: false,
                                       icon: FontAwesomeIcons.ruler,
                                       hintText: 'Size in meters squared',

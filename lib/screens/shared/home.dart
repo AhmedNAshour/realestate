@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:realestate/components/AdminHome/categories_slider.dart';
+import 'package:realestate/components/AdminHome/compoundsDistrictsSlider.dart';
+import 'package:realestate/components/AdminHome/propertyTypesSlider.dart';
+import 'package:realestate/components/lists_cards/compound_card.dart';
 import 'package:realestate/components/lists_cards/compoundsList.dart';
 import 'package:realestate/components/lists_cards/propertiesList.dart';
 import 'package:realestate/components/lists_cards/propertiesList_admin.dart';
@@ -48,6 +50,7 @@ class _HomeState extends State<Home> {
                       await AuthService().signOut();
                     } else {
                       showModalBottomSheet(
+                        isScrollControlled: true,
                         context: context,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
@@ -74,7 +77,6 @@ class _HomeState extends State<Home> {
                             ),
                           );
                         },
-                        isScrollControlled: true,
                       );
                     }
                   },
@@ -88,7 +90,22 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 SizedBox(
-                  height: height * 0.01,
+                  height: height * 0.02,
+                ),
+                FutureBuilder(
+                  future: DatabaseService().getCompound(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return CompoundCard(
+                        compound: snapshot.data,
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
+                ),
+                SizedBox(
+                  height: height * 0.02,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -119,21 +136,22 @@ class _HomeState extends State<Home> {
                     ),
                   ],
                 ),
-                SizedBox(height: height * 0.02),
-                Container(
-                  height: height * 0.3,
-                  child: MultiProvider(
-                    providers: [
-                      StreamProvider<List<Compound>>.value(
-                        value: DatabaseService().getCompoundsBySearch(
-                          limited: true,
-                        ),
-                      ),
-                    ],
-                    child: CompoundsList('', Axis.horizontal),
-                  ),
-                ),
-                SizedBox(height: height * 0.02),
+                SizedBox(height: height * 0.01),
+                CompoundsDistrictsSlider(),
+                // Container(
+                //   height: height * 0.3,
+                //   child: MultiProvider(
+                //     providers: [
+                //       StreamProvider<List<Compound>>.value(
+                //         value: DatabaseService().getCompoundsBySearch(
+                //           limited: true,
+                //         ),
+                //       ),
+                //     ],
+                //     child: CompoundsList('', Axis.horizontal),
+                //   ),
+                // ),
+                // SizedBox(height: height * 0.01),
                 Text(
                   'Categories',
                   style: TextStyle(
@@ -142,7 +160,7 @@ class _HomeState extends State<Home> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                PropertyTypesSlides(),
+                PropertyTypesSlider(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

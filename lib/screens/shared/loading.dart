@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:lottie/lottie.dart';
 import '../../constants.dart';
 
 class Loading extends StatelessWidget {
@@ -8,10 +8,7 @@ class Loading extends StatelessWidget {
     return Container(
       color: kPrimaryLightColor,
       child: Center(
-        child: SpinKitChasingDots(
-          color: kPrimaryColor,
-          size: 50,
-        ),
+        child: Lottie.asset('assets/house-loading-icon.json'),
       ),
     );
   }

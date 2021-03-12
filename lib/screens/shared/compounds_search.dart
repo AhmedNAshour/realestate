@@ -19,6 +19,7 @@ class _CompoundsSearchState extends State<CompoundsSearch> {
   String districtFilter = '';
   String areaFilter = '';
   Map navigationData = {};
+  bool firstTime = true;
 
   changeGovernateFilter(newGovernateFilter) {
     setState(() {
@@ -43,6 +44,8 @@ class _CompoundsSearchState extends State<CompoundsSearch> {
     final user = Provider.of<MyUser>(context);
 
     navigationData = ModalRoute.of(context).settings.arguments;
+    if (firstTime) districtFilter = navigationData['district'];
+    firstTime = false;
     List filters = [
       governateFilter,
       districtFilter,
@@ -60,7 +63,7 @@ class _CompoundsSearchState extends State<CompoundsSearch> {
             governate: governateFilter,
             district: districtFilter,
             area: areaFilter,
-            // status: 'active',
+            status: 'active',
           ),
         ),
         StreamProvider<UserData>.value(
@@ -242,8 +245,10 @@ class _CompoundsSearchState extends State<CompoundsSearch> {
                                           setState(() {
                                             if (index == 0) {
                                               governateFilter = '';
+                                              districtFilter = '';
                                             } else if (index == 1) {
                                               districtFilter = '';
+                                              areaFilter = '';
                                             } else if (index == 2) {
                                               areaFilter = '';
                                             }

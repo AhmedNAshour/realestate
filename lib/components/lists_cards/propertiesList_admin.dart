@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:realestate/components/lists_cards/property_card_admin.dart';
 import 'package:realestate/models/property.dart';
@@ -27,6 +28,14 @@ class _PropertiesListAdminState extends State<PropertiesListAdmin> {
   Widget build(BuildContext context) {
     List<Property> properties = Provider.of<List<Property>>(context) ?? [];
     Size size = MediaQuery.of(context).size;
+
+    if (properties.length == 0) {
+      return Center(
+        child: Container(
+          child: Text('Unfortunately , no matching properties exist :/'),
+        ),
+      );
+    }
 
     if (widget.userFavorites != null) {
       setState(() {

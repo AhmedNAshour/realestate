@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:realestate/models/compound.dart';
-import 'package:realestate/models/governate.dart';
 import 'package:realestate/models/location.dart';
 import 'package:realestate/models/property.dart';
 import 'package:realestate/models/request.dart';
@@ -149,8 +148,8 @@ class DatabaseService {
   Future updateCompoundData({
     String name,
     String description,
-    String meterPrice,
-    String installementPlan,
+    int meterPrice,
+    int installementPlan,
     String deliveryDate,
     String governate,
     String district,
@@ -287,6 +286,31 @@ class DatabaseService {
     }).toList();
   }
 
+  Future<Compound> getCompound() async {
+    DocumentSnapshot compoundDocument =
+        await compoundsCollection.doc('5DacnFTsw4QF3kRXSc4V').get();
+    Compound compound = Compound(
+      uid: compoundDocument.id,
+      name: compoundDocument.data()['name'] ?? '',
+      area: compoundDocument.data()['area'] ?? '',
+      description: compoundDocument.data()['description'] ?? '',
+      district: compoundDocument.data()['district'] ?? '',
+      governate: compoundDocument.data()['governate'] ?? '',
+      latitude: compoundDocument.data()['latitude'] ?? 0,
+      propertyTypes: compoundDocument.data()['unitTypes'] ?? [],
+      longitude: compoundDocument.data()['longitude'] ?? 0,
+      images: compoundDocument.data()['pictures'] ?? [],
+      meterPrice: compoundDocument.data()['meterPrice'] ?? 0,
+      availablePropertyAreas:
+          compoundDocument.data()['availablePropertyAreas'] ?? '',
+      status: compoundDocument.data()['status'] ?? '',
+      highlighted: compoundDocument.data()['highlighted'] ?? false,
+      installementPlan: compoundDocument.data()['installementPlan'] ?? 0,
+      deliveryDate: compoundDocument.data()['deliveryDate'] ?? '',
+    );
+    return compound;
+  }
+
   Stream<List<Compound>> getCompoundsBySearch({
     bool limited,
     String status,
@@ -294,8 +318,16 @@ class DatabaseService {
     String district,
     String area,
     bool highlighted,
+    String name,
   }) {
     Query query = compoundsCollection;
+
+    if (name != '') {
+      query = query.where(
+        'name',
+        isEqualTo: name,
+      );
+    }
 
     if (status != '') {
       query = query.where(

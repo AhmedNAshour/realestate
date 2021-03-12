@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "220751848025",
+    "project_id": "real-estate-shehab",
+    "storage_bucket": "real-estate-shehab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:220751848025:android:70250deccc9ab891564748",
+        "android_client_info": {
+          "package_name": "com.example.realestate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "220751848025-8ss3evrfoppftnkn3t4vuc3rh7qimm74.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCExJ9QeoyePileNOIcPf4HTqSTOie5Lx0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "220751848025-8ss3evrfoppftnkn3t4vuc3rh7qimm74.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

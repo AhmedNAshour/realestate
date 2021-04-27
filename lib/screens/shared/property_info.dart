@@ -375,35 +375,6 @@ class _PropertyInfoState extends State<PropertyInfo> {
                                   height: height * 0.0001,
                                   color: kPrimaryTextColor,
                                 ),
-                                Text(
-                                  'Description',
-                                  style: TextStyle(
-                                    color: kPrimaryTextColor,
-                                    fontSize: size.height * 0.03,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: height * 0.01,
-                                ),
-                                Container(
-                                  // height: height * 0.15,
-                                  child: SingleChildScrollView(
-                                    child: Text(
-                                      property.description,
-                                      style: TextStyle(
-                                        color: kPrimaryLightTextColor,
-                                        fontSize: size.height * 0.025,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.symmetric(
-                                      vertical: height * 0.02),
-                                  height: height * 0.0001,
-                                  color: kPrimaryTextColor,
-                                ),
                                 userData.role == 'admin' ||
                                         userData.role == 'salesman'
                                     ? Text(
@@ -455,29 +426,17 @@ class _PropertyInfoState extends State<PropertyInfo> {
                                       topRight: Radius.circular(20.0)),
                                 ),
                                 builder: (context) {
-                                  return FractionallySizedBox(
-                                    heightFactor: 0.7,
-                                    child: DraggableScrollableSheet(
-                                        initialChildSize: 1.0,
-                                        maxChildSize: 1.0,
-                                        minChildSize: 0.25,
-                                        builder: (BuildContext context,
-                                            ScrollController scrollController) {
-                                          return StatefulBuilder(builder:
-                                              (BuildContext context,
-                                                  StateSetter insideState) {
-                                            return DateSelectionForm(
-                                              changeDateSearch:
-                                                  changeDateSearch,
-                                              dateTextController:
-                                                  dateTextController,
-                                              dateSearch: dateSearch,
-                                              property: property,
-                                              user: userData,
-                                            );
-                                          });
-                                        }),
-                                  );
+                                  return StatefulBuilder(builder:
+                                      (BuildContext context,
+                                          StateSetter insideState) {
+                                    return DateSelectionForm(
+                                      changeDateSearch: changeDateSearch,
+                                      dateTextController: dateTextController,
+                                      dateSearch: dateSearch,
+                                      property: property,
+                                      user: userData,
+                                    );
+                                  });
                                 },
                                 isScrollControlled: true,
                               );
@@ -490,24 +449,13 @@ class _PropertyInfoState extends State<PropertyInfo> {
                                       topRight: Radius.circular(20.0)),
                                 ),
                                 builder: (context) {
-                                  return FractionallySizedBox(
-                                    heightFactor: 0.9,
-                                    child: DraggableScrollableSheet(
-                                      initialChildSize: 1.0,
-                                      maxChildSize: 1.0,
-                                      minChildSize: 0.25,
-                                      builder: (BuildContext context,
-                                          ScrollController scrollController) {
-                                        return StatefulBuilder(builder:
-                                            (BuildContext context,
-                                                StateSetter insideState) {
-                                          return LoginSignupModalBottomSheet(
-                                            modalBottomSheetState: insideState,
-                                          );
-                                        });
-                                      },
-                                    ),
-                                  );
+                                  return StatefulBuilder(builder:
+                                      (BuildContext context,
+                                          StateSetter insideState) {
+                                    return LoginSignupModalBottomSheet(
+                                      modalBottomSheetState: insideState,
+                                    );
+                                  });
                                 },
                                 isScrollControlled: true,
                               );
@@ -738,35 +686,6 @@ class _PropertyInfoState extends State<PropertyInfo> {
                             height: height * 0.0001,
                             color: kPrimaryTextColor,
                           ),
-                          Text(
-                            'Description',
-                            style: TextStyle(
-                              color: kPrimaryTextColor,
-                              fontSize: size.height * 0.03,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(
-                            height: height * 0.01,
-                          ),
-                          Container(
-                            // height: height * 0.15,
-                            child: SingleChildScrollView(
-                              child: Text(
-                                property.description,
-                                style: TextStyle(
-                                  color: kPrimaryLightTextColor,
-                                  fontSize: size.height * 0.025,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin:
-                                EdgeInsets.symmetric(vertical: height * 0.02),
-                            height: height * 0.0001,
-                            color: kPrimaryTextColor,
-                          ),
                         ],
                       ),
                     ),
@@ -788,24 +707,12 @@ class _PropertyInfoState extends State<PropertyInfo> {
                           topRight: Radius.circular(20.0)),
                     ),
                     builder: (context) {
-                      return FractionallySizedBox(
-                        heightFactor: 0.9,
-                        child: DraggableScrollableSheet(
-                          initialChildSize: 1.0,
-                          maxChildSize: 1.0,
-                          minChildSize: 0.25,
-                          builder: (BuildContext context,
-                              ScrollController scrollController) {
-                            return StatefulBuilder(builder:
-                                (BuildContext context,
-                                    StateSetter insideState) {
-                              return LoginSignupModalBottomSheet(
-                                modalBottomSheetState: insideState,
-                              );
-                            });
-                          },
-                        ),
-                      );
+                      return StatefulBuilder(builder:
+                          (BuildContext context, StateSetter insideState) {
+                        return LoginSignupModalBottomSheet(
+                          modalBottomSheetState: insideState,
+                        );
+                      });
                     },
                     isScrollControlled: true,
                   );
@@ -831,6 +738,5 @@ class _PropertyInfoState extends State<PropertyInfo> {
               ),
             ),
           );
-    ;
   }
 }

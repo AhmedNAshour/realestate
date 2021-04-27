@@ -1,34 +1,38 @@
 class Compound {
+  final String logoURL;
   final String uid;
-  final String area;
-  final String district;
-  final String governate;
+  final String locationLevel2;
+  final String locationLevel1;
   final String name;
   final String description;
   final List propertyTypes;
-  final String availablePropertyAreas;
+  final String areasAndUnits;
   final List images;
-  final int installementPlan;
+  final String paymentPlan;
   final int meterPrice;
+  final int startingPrice;
   final double latitude;
   final double longitude;
   final String status;
   final String deliveryDate;
+  final String finishingType;
   final bool highlighted;
 
   Compound({
+    this.logoURL,
+    this.startingPrice,
+    this.finishingType,
     this.highlighted,
     this.name,
     this.propertyTypes,
-    this.availablePropertyAreas,
-    this.installementPlan,
+    this.areasAndUnits,
+    this.paymentPlan,
     this.meterPrice,
     this.deliveryDate,
     this.status,
     this.uid,
-    this.area,
-    this.district,
-    this.governate,
+    this.locationLevel2,
+    this.locationLevel1,
     this.description,
     this.images,
     this.latitude,

@@ -22,42 +22,44 @@ class _SalesmanNavigationState extends State<SalesmanNavigation> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // backgroundColor: Color(0xFFF0F0F0),
-      body: screens[_currentIndex],
-      bottomNavigationBar: CurvedNavigationBar(
-        color: kPrimaryLightColor,
-        backgroundColor: Colors.transparent,
-        animationDuration: Duration(milliseconds: 200),
-        height: 60,
-        index: 0,
-        items: [
-          FaIcon(
-            FontAwesomeIcons.home,
-            size: 30,
-            color: kPrimaryColor,
-          ),
-          FaIcon(
-            FontAwesomeIcons.heart,
-            size: 30,
-            color: kPrimaryColor,
-          ),
-          FaIcon(
-            FontAwesomeIcons.list,
-            size: 30,
-            color: kPrimaryColor,
-          ),
-          FaIcon(
-            FontAwesomeIcons.user,
-            size: 30,
-            color: kPrimaryColor,
-          ),
-        ],
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+    return SafeArea(
+      child: Scaffold(
+        // backgroundColor: Color(0xFFF0F0F0),
+        body: screens[_currentIndex],
+        bottomNavigationBar: CurvedNavigationBar(
+          color: kPrimaryLightColor,
+          backgroundColor: Colors.transparent,
+          animationDuration: Duration(milliseconds: 200),
+          height: 60,
+          index: 0,
+          items: [
+            FaIcon(
+              FontAwesomeIcons.home,
+              size: 30,
+              color: kPrimaryColor,
+            ),
+            FaIcon(
+              FontAwesomeIcons.heart,
+              size: 30,
+              color: kPrimaryColor,
+            ),
+            FaIcon(
+              FontAwesomeIcons.list,
+              size: 30,
+              color: kPrimaryColor,
+            ),
+            FaIcon(
+              FontAwesomeIcons.user,
+              size: 30,
+              color: kPrimaryColor,
+            ),
+          ],
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+        ),
       ),
     );
   }

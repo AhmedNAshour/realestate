@@ -217,6 +217,8 @@ class _AdminPropertyCardState extends State<AdminPropertyCard> {
               ),
               Positioned(
                 bottom: 0,
+                left: width * 0.005,
+                right: width * 0.005,
                 child: Container(
                   padding: EdgeInsets.all(width * 0.03),
                   height: height * 0.15,

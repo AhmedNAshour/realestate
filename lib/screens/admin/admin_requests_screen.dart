@@ -125,6 +125,9 @@ class _AdminRequestsState extends State<AdminRequests> {
                   ),
                 ],
               ),
+              SizedBox(
+                height: height * 0.02,
+              ),
               Expanded(
                 child: Container(
                   child: selectedTab == 0
@@ -133,7 +136,7 @@ class _AdminRequestsState extends State<AdminRequests> {
                           providers: [
                             StreamProvider<List<Request>>.value(
                                 value: DatabaseService()
-                                    .getAppointmentRequestsBySearch('pending'))
+                                    .getAppointmentRequestsBySearch())
                           ],
                           child: AppointmentRequestsListAdmin(),
                         ),

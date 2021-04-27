@@ -16,27 +16,29 @@ class _AnonNavigationState extends State<AnonNavigation> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // backgroundColor: Color(0xFFF0F0F0),
-      body: screens[_currentIndex],
-      bottomNavigationBar: CurvedNavigationBar(
-        color: kPrimaryLightColor,
-        backgroundColor: Colors.transparent,
-        animationDuration: Duration(milliseconds: 200),
-        height: 60,
-        index: 0,
-        items: [
-          FaIcon(
-            FontAwesomeIcons.home,
-            size: 30,
-            color: kPrimaryColor,
-          ),
-        ],
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+    return SafeArea(
+      child: Scaffold(
+        // backgroundColor: Color(0xFFF0F0F0),
+        body: screens[_currentIndex],
+        bottomNavigationBar: CurvedNavigationBar(
+          color: kPrimaryLightColor,
+          backgroundColor: Colors.transparent,
+          animationDuration: Duration(milliseconds: 200),
+          height: 60,
+          index: 0,
+          items: [
+            FaIcon(
+              FontAwesomeIcons.home,
+              size: 30,
+              color: kPrimaryColor,
+            ),
+          ],
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+        ),
       ),
     );
   }

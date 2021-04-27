@@ -114,6 +114,16 @@ class _CompoundCardState extends State<CompoundCard> {
                 child: showDelete(height, user),
               ),
               Positioned(
+                child: CircleAvatar(
+                  radius: size.width * 0.12,
+                  backgroundImage: widget.compound.logoURL != ''
+                      ? NetworkImage(
+                          widget.compound.logoURL,
+                        )
+                      : AssetImage('assets/images/userPlaceholder.png'),
+                ),
+              ),
+              Positioned(
                 bottom: 0,
                 left: width * 0.01,
                 right: width * 0.01,
@@ -123,20 +133,55 @@ class _CompoundCardState extends State<CompoundCard> {
                   width: width * 0.85,
                   // width: double.infinity,
                   decoration: BoxDecoration(
-                    color: kPrimaryLightColor,
+                    color: kSecondaryColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        '${widget.compound.name}',
-                        style: TextStyle(
-                          color: kPrimaryTextColor,
-                          fontSize: height * 0.03,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${widget.compound.name}',
+                            style: TextStyle(
+                              color: kPrimaryLightColor,
+                              fontSize: height * 0.03,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            'District: ${widget.compound.locationLevel2}',
+                            style: TextStyle(
+                              color: kPrimaryLightColor,
+                              fontSize: height * 0.02,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Starting Price',
+                            style: TextStyle(
+                              color: kPrimaryLightColor,
+                              fontSize: height * 0.02,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            '${widget.compound.startingPrice} EGP',
+                            style: TextStyle(
+                              color: kPrimaryLightColor,
+                              fontSize: height * 0.015,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

@@ -146,36 +146,40 @@ class DatabaseService {
   }
 
   Future updateCompoundData({
+    String logoURL,
     String name,
     String description,
     int meterPrice,
-    int installementPlan,
+    String paymentPlan,
     String deliveryDate,
     String governate,
     String district,
-    String area,
     List<String> unitTypes,
-    String availableUnitAreas,
+    String areasAndUnits,
     List<String> imagesURLs,
     double latitude,
     double longitude,
     String status,
     bool highlighted,
+    int startingPrice,
+    String finishingType,
   }) async {
     return await compoundsCollection.doc().set({
+      'logoURL': logoURL,
+      'finishingType': finishingType,
       'name': name,
       'description': description,
+      'startingPrice': startingPrice,
       'meterPrice': meterPrice,
-      'installementPlan': installementPlan,
+      'paymentPlan': paymentPlan,
       'deliveryDate': deliveryDate,
       'propertyTypes': unitTypes,
-      'availablePropertyAreas': availableUnitAreas,
+      'areasAndUnits': areasAndUnits,
       'pictures': imagesURLs,
       'latitude': latitude,
       'longitude': longitude,
       'governate': governate,
       'district': district,
-      'area': area,
       'status': status,
       'highlighted': highlighted,
     });
@@ -186,20 +190,22 @@ class DatabaseService {
       return Compound(
         uid: doc.id,
         name: doc.data()['name'] ?? '',
-        area: doc.data()['area'] ?? '',
         description: doc.data()['description'] ?? '',
-        district: doc.data()['district'] ?? '',
-        governate: doc.data()['governate'] ?? '',
+        locationLevel2: doc.data()['district'] ?? '',
+        locationLevel1: doc.data()['governate'] ?? '',
+        logoURL: doc.data()['logoURL'] ?? '',
         latitude: doc.data()['latitude'] ?? 0,
         propertyTypes: doc.data()['unitTypes'] ?? [],
         longitude: doc.data()['longitude'] ?? 0,
         images: doc.data()['pictures'] ?? [],
         meterPrice: doc.data()['meterPrice'] ?? 0,
-        availablePropertyAreas: doc.data()['availablePropertyAreas'] ?? '',
+        areasAndUnits: doc.data()['areasAndUnits'] ?? '',
         status: doc.data()['status'] ?? '',
         highlighted: doc.data()['highlighted'] ?? false,
-        installementPlan: doc.data()['installementPlan'] ?? 0,
+        paymentPlan: doc.data()['paymentPlan'] ?? '',
         deliveryDate: doc.data()['deliveryDate'] ?? '',
+        startingPrice: doc.data()['startingPrice'] ?? 0,
+        finishingType: doc.data()['finishingType'] ?? '',
       );
     }).toList();
   }
@@ -260,7 +266,6 @@ class DatabaseService {
         uid: doc.id,
         title: doc.data()['title'] ?? '',
         area: doc.data()['area'] ?? '',
-        description: doc.data()['description'] ?? '',
         district: doc.data()['district'] ?? '',
         governate: doc.data()['governate'] ?? '',
         latitude: doc.data()['latitude'] ?? 0,
@@ -292,21 +297,22 @@ class DatabaseService {
     Compound compound = Compound(
       uid: compoundDocument.id,
       name: compoundDocument.data()['name'] ?? '',
-      area: compoundDocument.data()['area'] ?? '',
       description: compoundDocument.data()['description'] ?? '',
-      district: compoundDocument.data()['district'] ?? '',
-      governate: compoundDocument.data()['governate'] ?? '',
+      locationLevel2: compoundDocument.data()['district'] ?? '',
+      locationLevel1: compoundDocument.data()['governate'] ?? '',
       latitude: compoundDocument.data()['latitude'] ?? 0,
+      logoURL: compoundDocument.data()['logoURL'] ?? '',
       propertyTypes: compoundDocument.data()['unitTypes'] ?? [],
       longitude: compoundDocument.data()['longitude'] ?? 0,
       images: compoundDocument.data()['pictures'] ?? [],
       meterPrice: compoundDocument.data()['meterPrice'] ?? 0,
-      availablePropertyAreas:
-          compoundDocument.data()['availablePropertyAreas'] ?? '',
+      areasAndUnits: compoundDocument.data()['areasAndUnits'] ?? '',
       status: compoundDocument.data()['status'] ?? '',
       highlighted: compoundDocument.data()['highlighted'] ?? false,
-      installementPlan: compoundDocument.data()['installementPlan'] ?? 0,
+      paymentPlan: compoundDocument.data()['paymentPlan'] ?? '',
       deliveryDate: compoundDocument.data()['deliveryDate'] ?? '',
+      startingPrice: compoundDocument.data()['startingPrice'] ?? 0,
+      finishingType: compoundDocument.data()['finishingType'] ?? '',
     );
     return compound;
   }
@@ -476,7 +482,6 @@ class DatabaseService {
       {Property property, String date, UserData user}) async {
     return await requestsCollection.doc().set({
       'title': property.title,
-      'description': property.description,
       'numberBedrooms': property.numBedrooms,
       'numberBathrooms': property.numBathrooms,
       'price': property.price,
@@ -562,7 +567,6 @@ class DatabaseService {
           title: doc.data()['title'] ?? '',
           uid: doc.data()['propertyId'] ?? '',
           area: doc.data()['area'] ?? '',
-          description: doc.data()['description'] ?? '',
           district: doc.data()['district'] ?? '',
           governate: doc.data()['governate'] ?? '',
           latitude: doc.data()['latitude'] ?? 0,
@@ -594,7 +598,7 @@ class DatabaseService {
     }).toList();
   }
 
-  Stream<List<Request>> getAppointmentRequestsBySearch(String status) {
+  Stream<List<Request>> getAppointmentRequestsBySearch({String status}) {
     Query query = requestsCollection;
     if (status != '') {
       query = query.where(
@@ -602,7 +606,10 @@ class DatabaseService {
         isEqualTo: status,
       );
     }
-    return query.snapshots().map(_appointmentRequestsListFromSnapshot);
+    return query
+        .orderBy('status')
+        .snapshots()
+        .map(_appointmentRequestsListFromSnapshot);
   }
 
   Future updateAppointmentRequestStatus({

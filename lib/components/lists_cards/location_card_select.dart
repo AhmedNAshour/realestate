@@ -36,11 +36,19 @@ class SelectLocationCard extends StatelessWidget {
                 'addType': addType,
               });
             } else if (location.type == 1) {
-              Navigator.pushNamed(context, SelectArea.id, arguments: {
-                'govName': govName,
-                'districtName': location.docId,
-                'addType': addType,
-              });
+              if (addType == 'compound') {
+                Navigator.pushNamed(context, MapSelect.id, arguments: {
+                  'addType': addType,
+                  'govName': govName,
+                  'districtName': location.docId,
+                });
+              } else {
+                Navigator.pushNamed(context, SelectArea.id, arguments: {
+                  'govName': govName,
+                  'districtName': location.docId,
+                  'addType': addType,
+                });
+              }
             } else {
               Navigator.pushNamed(context, MapSelect.id, arguments: {
                 'addType': addType,

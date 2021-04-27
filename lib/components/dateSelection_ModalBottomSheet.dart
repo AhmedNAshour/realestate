@@ -1,5 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:realestate/components/forms/rounded_button..dart';
@@ -33,49 +34,62 @@ class DateSelectionForm extends StatefulWidget {
 class _DateSelectionFormState extends State<DateSelectionForm> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    double height = size.height;
+    double width = size.width;
     return SingleChildScrollView(
       child: Form(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             ModalBottomSheetHeader(
               title: 'Select Date',
               sizedBoxWidth: 0.22,
             ),
-            TextFieldContainer(
-              child: TextFormField(
-                onTap: () {
-                  showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2020),
-                    lastDate: DateTime(2030),
-                  ).then((value) => setState(() {
-                        if (value == null) {
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: width * 0.06),
+              child: TextFieldContainer(
+                child: TextFormField(
+                  onTap: () {
+                    DatePicker.showDateTimePicker(
+                      context,
+                      showTitleActions: true,
+                      minTime: DateTime.now(),
+                      maxTime: DateTime(2030),
+                      onChanged: (date) {},
+                      onConfirm: (date) {
+                        if (date == null) {
                           widget.changeDateSearch('');
                           widget.dateTextController.text = '';
                           // showCancel =
                           //     false;
                         } else {
                           widget.changeDateSearch(
-                              DateFormat('yyyy-MM-dd').format(value));
+                              '${DateFormat("MMM").format(date)} ${DateFormat("d").format(date)} - ${DateFormat("jm").format(date)}');
                           widget.dateTextController.text =
-                              DateFormat('yyyy-MM-dd').format(value);
+                              '${DateFormat("MMM").format(date)} ${DateFormat("d").format(date)} - ${DateFormat("jm").format(date)}';
                         }
-                      }));
-                },
-                keyboardType: null,
-                controller: widget.dateTextController,
-                // initialValue: widget.dateSearch,
-                decoration: InputDecoration(
+                      },
+                      currentTime: DateTime.now(),
+                      locale: LocaleType.en,
+                    );
+                  },
+                  keyboardType: null,
+                  controller: widget.dateTextController,
+                  // initialValue: widget.dateSearch,
+                  decoration: InputDecoration(
                     focusColor: kPrimaryColor,
                     labelStyle: TextStyle(
                       color: kPrimaryColor,
                     ),
                     labelText: 'Select Date',
-                    icon: Icon(FontAwesomeIcons.calendar)),
-                onChanged: (val) {
-                  widget.changeDateSearch(val);
-                },
+                    icon: Icon(FontAwesomeIcons.calendar),
+                    border: InputBorder.none,
+                  ),
+                  onChanged: (val) {
+                    widget.changeDateSearch(val);
+                  },
+                ),
               ),
             ),
             RoundedButton(
@@ -98,6 +112,9 @@ class _DateSelectionFormState extends State<DateSelectionForm> {
                   },
                 )..show();
               },
+            ),
+            SizedBox(
+              height: height * 0.02,
             ),
           ],
         ),

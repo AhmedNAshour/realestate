@@ -68,7 +68,7 @@ class _PropertiesListState extends State<PropertiesList> {
                   children: [
                     PropertyCard(property: properties[index]),
                     SizedBox(
-                      width: size.width * 0.04,
+                      width: size.width * 0.02,
                     ),
                   ],
                 )
@@ -88,7 +88,14 @@ class _PropertiesListState extends State<PropertiesList> {
         scrollDirection: widget.axis,
         itemCount: widget.searchList.length,
         itemBuilder: (context, index) {
-          return PropertyCard(property: widget.searchList[index]);
+          return Column(
+            children: [
+              PropertyCard(property: widget.searchList[index]),
+              SizedBox(
+                height: size.height * 0.02,
+              ),
+            ],
+          );
         },
       );
     }

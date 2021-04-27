@@ -91,19 +91,33 @@ class AppointmentCard extends StatelessWidget {
                         SizedBox(
                           height: height * 0.01,
                         ),
-                        GestureDetector(
-                          onTap: () async {
-                            await DatabaseService()
-                                .updateAppointmentRequestStatus(
-                                    status: 'confirmed',
-                                    requestId: request.uid);
-                          },
-                          child: Icon(
-                            Icons.check,
-                            color: kSecondaryColor,
-                            size: height * 0.04,
-                          ),
-                        ),
+                        request.status == 'pending'
+                            ? GestureDetector(
+                                onTap: () async {
+                                  await DatabaseService()
+                                      .updateAppointmentRequestStatus(
+                                          status: 'confirmed',
+                                          requestId: request.uid);
+                                },
+                                child: Icon(
+                                  Icons.check,
+                                  color: kSecondaryColor,
+                                  size: height * 0.04,
+                                ),
+                              )
+                            : GestureDetector(
+                                onTap: () async {
+                                  await DatabaseService()
+                                      .updateAppointmentRequestStatus(
+                                          status: 'pending',
+                                          requestId: request.uid);
+                                },
+                                child: Icon(
+                                  Icons.cancel,
+                                  color: kSecondaryColor,
+                                  size: height * 0.04,
+                                ),
+                              ),
                       ],
                     ),
                   ),

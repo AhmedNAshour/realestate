@@ -8,7 +8,6 @@ class Property {
   final String propertyType;
   final int listingType;
   final String title;
-  final String description;
   final List images;
   final int price;
   final int size;
@@ -29,7 +28,6 @@ class Property {
     this.propertyType,
     this.listingType,
     this.title,
-    this.description,
     this.images,
     this.price,
     this.size,

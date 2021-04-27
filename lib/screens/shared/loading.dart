@@ -8,7 +8,7 @@ class Loading extends StatelessWidget {
     return Container(
       color: kPrimaryLightColor,
       child: Center(
-        child: Lottie.asset('assets/house-loading-icon.json'),
+        child: Lottie.asset('assets/animations/house-loading-icon.json'),
       ),
     );
   }

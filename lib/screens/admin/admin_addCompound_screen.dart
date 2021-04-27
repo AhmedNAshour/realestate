@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:realestate/components/forms/rounded_button..dart';
 import 'package:realestate/components/forms/rounded_input_field.dart';
 import 'package:realestate/components/forms/text_field_container.dart';
@@ -35,15 +38,26 @@ class _AdminAddCompoundState extends State<AdminAddCompound> {
   String location = '';
   String description = '';
   String meterPrice = '';
-  String installementPlan = '';
+  String startingPrice = '';
+  String finishingType = 'finished';
+  String paymentPlan = '';
   String error = '';
   String deliveryDate = '';
   String unitTypes = '';
-  String availableUnitAreas = '';
+  String unitsAndAreas = '';
   String pictures = '';
   bool loading = false;
   List<File> images = <File>[];
   List<String> imagesURLs = <String>[];
+  String logoURL = '';
+  File logoFile;
+
+  Future getLogo() async {
+    var tempImage = await ImagePicker().getImage(source: ImageSource.gallery);
+    setState(() {
+      logoFile = File(tempImage.path);
+    });
+  }
 
   Future getImage() async {
     FilePickerResult result = await FilePicker.platform.pickFiles(
@@ -102,6 +116,37 @@ class _AdminAddCompoundState extends State<AdminAddCompound> {
                       child: BackButton(
                         color: kSecondaryColor,
                       ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: height * 0.24,
+                  left: width * 0.06,
+                  child: CircleAvatar(
+                    radius: size.width * 0.10,
+                    backgroundImage: logoFile != null
+                        ? FileImage(logoFile)
+                        : AssetImage(
+                            'assets/images/userPlaceholder.png',
+                          ),
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Positioned(
+                          bottom: -size.width * 0.01,
+                          right: -size.width * 0.01,
+                          child: GestureDetector(
+                            onTap: () {
+                              getLogo();
+                            },
+                            child: SvgPicture.asset(
+                              'assets/images/add.svg',
+                              width: size.width * 0.095,
+                              height: size.width * 0.095,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -178,6 +223,7 @@ class _AdminAddCompoundState extends State<AdminAddCompound> {
                                     val.isEmpty ? 'Enter a description' : null,
                               ),
                               RoundedInputField(
+                                textInputType: TextInputType.number,
                                 obsecureText: false,
                                 icon: FontAwesomeIcons.moneyBillAlt,
                                 hintText: 'Meter Price',
@@ -192,25 +238,36 @@ class _AdminAddCompoundState extends State<AdminAddCompound> {
                               RoundedInputField(
                                 textInputType: TextInputType.number,
                                 obsecureText: false,
+                                icon: FontAwesomeIcons.moneyBillAlt,
+                                hintText: 'Starting Price',
+                                onChanged: (val) {
+                                  setState(() => startingPrice = val);
+                                },
+                                validator: (val) =>
+                                    val.isEmpty || double.tryParse(val) == null
+                                        ? 'Enter a valid price'
+                                        : null,
+                              ),
+                              RoundedInputField(
+                                obsecureText: false,
                                 icon: FontAwesomeIcons.pen,
                                 hintText: 'Installement Plan',
                                 onChanged: (val) {
-                                  setState(() => installementPlan = val);
+                                  setState(() => paymentPlan = val);
                                 },
                                 validator: (val) => val.isEmpty
                                     ? 'Enter an installement plan'
                                     : null,
                               ),
                               RoundedInputField(
-                                textInputType: TextInputType.number,
                                 obsecureText: false,
                                 icon: FontAwesomeIcons.ruler,
-                                hintText: 'Available Unit Areas',
+                                hintText: 'Units & Areas',
                                 onChanged: (val) {
-                                  setState(() => availableUnitAreas = val);
+                                  setState(() => unitsAndAreas = val);
                                 },
                                 validator: (val) => val.isEmpty
-                                    ? 'Enter available unit areas'
+                                    ? 'Enter available units & areas'
                                     : null,
                               ),
                               TextFieldContainer(
@@ -266,6 +323,102 @@ class _AdminAddCompoundState extends State<AdminAddCompound> {
                                 choiceType: S2ChoiceType.chips,
                               ),
                               SizedBox(height: height * 0.02),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: size.width * 0.1),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            finishingType = 'finished';
+                                          });
+                                        },
+                                        child: Container(
+                                          // width: size.width * 0.35,
+                                          // height: size.height * 0.07,
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: size.height * 0.02,
+                                            horizontal: size.width * 0.04,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: finishingType == 'finished'
+                                                ? kPrimaryColor
+                                                : Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border: Border.all(
+                                              color: finishingType == 'finished'
+                                                  ? Colors.transparent
+                                                  : kPrimaryLightColor,
+                                            ),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              'Finished',
+                                              style: TextStyle(
+                                                color:
+                                                    finishingType == 'finished'
+                                                        ? Colors.white
+                                                        : kPrimaryTextColor,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: size.width * 0.02,
+                                    ),
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            finishingType = 'unifinished';
+                                          });
+                                        },
+                                        child: Container(
+                                          // width: size.width * 0.35,
+                                          // height: size.height * 0.07,
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: size.height * 0.02,
+                                            horizontal: size.width * 0.04,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color:
+                                                finishingType == 'unifinished'
+                                                    ? kPrimaryColor
+                                                    : Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border: Border.all(
+                                              color:
+                                                  finishingType == 'unifinished'
+                                                      ? Colors.transparent
+                                                      : kPrimaryLightColor,
+                                            ),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              'Unfinished',
+                                              style: TextStyle(
+                                                color: finishingType ==
+                                                        'unifinished'
+                                                    ? Colors.white
+                                                    : kPrimaryTextColor,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: size.height * 0.02,
+                              ),
                               RoundedButton(
                                 text: 'Add',
                                 press: () async {
@@ -281,22 +434,33 @@ class _AdminAddCompoundState extends State<AdminAddCompound> {
                                       dynamic result;
                                       imagesURLs = await DatabaseService()
                                           .getDownloadURLs(images, name);
+                                      if (logoFile != null) {
+                                        final Reference firebaseStorageRef =
+                                            FirebaseStorage.instance.ref().child(
+                                                'compoundsLogos/${name}.jpg');
+                                        UploadTask task = firebaseStorageRef
+                                            .putFile(logoFile);
+                                        TaskSnapshot taskSnapshot = await task;
+                                        logoURL = await taskSnapshot.ref
+                                            .getDownloadURL();
+                                      }
                                       result = await DatabaseService()
                                           .updateCompoundData(
+                                        logoURL: logoURL,
                                         name: name,
                                         imagesURLs: imagesURLs,
                                         meterPrice: int.parse(meterPrice),
                                         deliveryDate: deliveryDate,
                                         unitTypes: value,
-                                        availableUnitAreas: availableUnitAreas,
-                                        installementPlan:
-                                            int.parse(installementPlan),
+                                        areasAndUnits: unitsAndAreas,
+                                        paymentPlan: paymentPlan,
+                                        startingPrice: int.parse(startingPrice),
+                                        finishingType: finishingType,
                                         description: description,
                                         latitude: locationData['latitude'],
                                         longitude: locationData['longitude'],
                                         governate: locationData['govName'],
                                         district: locationData['districtName'],
-                                        area: locationData['areaName'],
                                         status: 'active',
                                         highlighted: true,
                                       );

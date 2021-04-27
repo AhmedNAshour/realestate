@@ -33,6 +33,7 @@ class _LoginSignupModalBottomSheetState
     double width = size.width;
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         ModalBottomSheetHeader(
           title: 'Login/Signup',

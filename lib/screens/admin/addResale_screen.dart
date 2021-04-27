@@ -33,7 +33,6 @@ class _AddResaleState extends State<AddResale> {
 
   // text field state
   String title = '';
-  String description = '';
   int numberBathrooms;
   int numberBedrooms;
   String error = '';
@@ -275,17 +274,6 @@ class _AddResaleState extends State<AddResale> {
                                           val.isEmpty ? 'Enter a title' : null,
                                     ),
                                     RoundedInputField(
-                                      obsecureText: false,
-                                      icon: FontAwesomeIcons.pen,
-                                      hintText: 'Description',
-                                      onChanged: (val) {
-                                        setState(() => description = val);
-                                      },
-                                      validator: (val) => val.isEmpty
-                                          ? 'Enter a description'
-                                          : null,
-                                    ),
-                                    RoundedInputField(
                                       textInputType: TextInputType.number,
                                       obsecureText: false,
                                       icon: FontAwesomeIcons.moneyBill,
@@ -365,7 +353,6 @@ class _AddResaleState extends State<AddResale> {
                                               numberBedrooms: numberBedrooms,
                                               price: price,
                                               type: value,
-                                              description: description,
                                               latitude: latitude,
                                               longitude: longitude,
                                               governate:

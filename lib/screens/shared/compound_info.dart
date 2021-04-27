@@ -125,7 +125,7 @@ class _CompoundInfoState extends State<CompoundInfo> {
                       ),
                     ),
                     Text(
-                      '${compound.area} , ${compound.district} , ${compound.governate}',
+                      '${compound.locationLevel2} , ${compound.locationLevel1}',
                       style: TextStyle(
                         color: kPrimaryLightTextColor,
                         fontSize: size.height * 0.025,
@@ -198,7 +198,7 @@ class _CompoundInfoState extends State<CompoundInfo> {
                       height: height * 0.01,
                     ),
                     Text(
-                      '${compound.installementPlan}',
+                      '${compound.paymentPlan}',
                       style: TextStyle(
                         color: kPrimaryLightTextColor,
                         fontSize: size.height * 0.025,

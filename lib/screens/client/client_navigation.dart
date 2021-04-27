@@ -17,7 +17,7 @@ class _ClientNavigationState extends State<ClientNavigation> {
   List<Widget> screens = [
     Home(),
     Favorites(),
-    Listings(),
+    // Listings(),
     Profile(),
   ];
 
@@ -49,11 +49,11 @@ class _ClientNavigationState extends State<ClientNavigation> {
             size: 30,
             color: kPrimaryColor,
           ),
-          FaIcon(
-            FontAwesomeIcons.list,
-            size: 30,
-            color: kPrimaryColor,
-          ),
+          // FaIcon(
+          //   FontAwesomeIcons.list,
+          //   size: 30,
+          //   color: kPrimaryColor,
+          // ),
           FaIcon(
             FontAwesomeIcons.user,
             size: 30,

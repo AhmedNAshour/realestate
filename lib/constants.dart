@@ -5,3 +5,4 @@ const kSecondaryColor = Color(0xFFED702D);
 const kPrimaryLightColor = Colors.white;
 const kPrimaryTextColor = Color(0xFF252D51);
 const kPrimaryLightTextColor = Color(0xFFCDCDDA);
+const kSelectedSwitch = Color(0xFF86E09E);

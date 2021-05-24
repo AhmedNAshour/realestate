@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -24,12 +25,24 @@ import 'package:realestate/screens/shared/salesmen.dart';
 import 'package:realestate/screens/shared/wrapper.dart';
 import 'package:realestate/services/auth.dart';
 import 'package:realestate/services/database.dart';
+import 'langs/codegen_loader.g.dart';
 import 'models/user.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(EasyLocalization(
+    path: 'assets/langs',
+    supportedLocales: [
+      Locale('en'),
+      Locale('ar'),
+    ],
+    startLocale: Locale('en'),
+    fallbackLocale: Locale('en'),
+    assetLoader: CodegenLoader(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -43,6 +56,9 @@ class MyApp extends StatelessWidget {
             value: DatabaseService().governates),
       ],
       child: MaterialApp(
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
         theme: ThemeData(fontFamily: 'Roboto', backgroundColor: Colors.white),
         debugShowCheckedModeBanner: false,
         initialRoute: '/',

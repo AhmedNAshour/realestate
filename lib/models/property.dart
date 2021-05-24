@@ -7,8 +7,8 @@ class Property {
   final String governate;
   final String propertyType;
   final int listingType;
-  final String title;
   final List images;
+  final List amenities;
   final int price;
   final int size;
   final int numBathrooms;
@@ -19,6 +19,7 @@ class Property {
   final String status;
 
   Property({
+    this.amenities,
     this.agent,
     this.status,
     this.uid,
@@ -27,7 +28,6 @@ class Property {
     this.governate,
     this.propertyType,
     this.listingType,
-    this.title,
     this.images,
     this.price,
     this.size,

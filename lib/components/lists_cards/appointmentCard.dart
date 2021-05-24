@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:realestate/constants.dart';
 import 'package:realestate/models/request.dart';
+import 'package:realestate/models/user.dart';
+import 'package:realestate/screens/shared/compound_info.dart';
 import 'package:realestate/screens/shared/property_info.dart';
 import 'package:realestate/services/database.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -8,7 +10,10 @@ import 'package:url_launcher/url_launcher.dart';
 class AppointmentCard extends StatelessWidget {
   final Request request;
 
-  const AppointmentCard({Key key, this.request}) : super(key: key);
+  const AppointmentCard({
+    Key key,
+    this.request,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -19,11 +24,22 @@ class AppointmentCard extends StatelessWidget {
       children: [
         GestureDetector(
           onLongPress: () {
-            Navigator.pushNamed(
-              context,
-              PropertyInfo.id,
-              arguments: request.property,
-            );
+            request.compound == null
+                ? Navigator.pushNamed(
+                    context,
+                    PropertyInfo.id,
+                    arguments: request.property,
+                  )
+                : Navigator.pushNamed(
+                    context,
+                    CompoundInfo.id,
+                    arguments: {
+                      'compound': request.compound,
+                      'user': UserData(
+                        role: 'admin',
+                      ),
+                    },
+                  );
           },
           child: Container(
             padding: EdgeInsets.all(width * 0.02),

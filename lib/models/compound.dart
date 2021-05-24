@@ -6,6 +6,7 @@ class Compound {
   final String name;
   final String description;
   final List propertyTypes;
+  final List facilities;
   final String areasAndUnits;
   final List images;
   final String paymentPlan;
@@ -19,6 +20,7 @@ class Compound {
   final bool highlighted;
 
   Compound({
+    this.facilities,
     this.logoURL,
     this.startingPrice,
     this.finishingType,

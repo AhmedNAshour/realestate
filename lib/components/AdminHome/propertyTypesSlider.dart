@@ -10,9 +10,8 @@ class PropertyTypesSlider extends StatelessWidget {
   final List<String> propertyTypes = [
     'Apartment',
     'Villa',
-    'House',
-    'Room',
-    'Flat'
+    'Vacation',
+    'Commercial',
   ];
 
   @override

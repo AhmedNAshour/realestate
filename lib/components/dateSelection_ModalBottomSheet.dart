@@ -7,6 +7,7 @@ import 'package:realestate/components/forms/rounded_button..dart';
 import 'package:realestate/components/forms/text_field_container.dart';
 import 'package:realestate/components/modalBottomSheetheader.dart';
 import 'package:realestate/constants.dart';
+import 'package:realestate/models/compound.dart';
 import 'package:realestate/models/property.dart';
 import 'package:realestate/models/user.dart';
 import 'package:realestate/services/database.dart';
@@ -19,6 +20,8 @@ class DateSelectionForm extends StatefulWidget {
     this.changeDateSearch,
     this.property,
     this.user,
+    this.type,
+    this.compound,
   }) : super(key: key);
 
   final String dateSearch;
@@ -26,6 +29,8 @@ class DateSelectionForm extends StatefulWidget {
   final Function changeDateSearch;
   final Property property;
   final UserData user;
+  final String type;
+  final Compound compound;
 
   @override
   _DateSelectionFormState createState() => _DateSelectionFormState();
@@ -104,6 +109,7 @@ class _DateSelectionFormState extends State<DateSelectionForm> {
                   btnCancelOnPress: () {},
                   btnOkOnPress: () async {
                     await DatabaseService().updateRequestData(
+                      compound: widget.compound,
                       property: widget.property,
                       date: widget.dateSearch,
                       user: widget.user,

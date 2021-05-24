@@ -1,7 +1,9 @@
+import 'package:realestate/models/compound.dart';
 import 'package:realestate/models/property.dart';
 
 class Request {
   final Property property;
+  final Compound compound;
   final String uid;
   final String userName;
   final String userId;
@@ -11,6 +13,7 @@ class Request {
   final String date;
 
   Request({
+    this.compound,
     this.property,
     this.date,
     this.uid,

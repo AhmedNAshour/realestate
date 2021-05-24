@@ -157,6 +157,7 @@ class DatabaseService {
     List<String> unitTypes,
     String areasAndUnits,
     List<String> imagesURLs,
+    List facilities,
     double latitude,
     double longitude,
     String status,
@@ -165,6 +166,7 @@ class DatabaseService {
     String finishingType,
   }) async {
     return await compoundsCollection.doc().set({
+      'facilities': facilities,
       'logoURL': logoURL,
       'finishingType': finishingType,
       'name': name,
@@ -196,6 +198,7 @@ class DatabaseService {
         logoURL: doc.data()['logoURL'] ?? '',
         latitude: doc.data()['latitude'] ?? 0,
         propertyTypes: doc.data()['unitTypes'] ?? [],
+        facilities: doc.data()['facilities'] ?? [],
         longitude: doc.data()['longitude'] ?? 0,
         images: doc.data()['pictures'] ?? [],
         meterPrice: doc.data()['meterPrice'] ?? 0,
@@ -211,7 +214,6 @@ class DatabaseService {
   }
 
   Future updatePropertyData({
-    String title,
     String description,
     int numberBedrooms,
     int numberBathrooms,
@@ -224,6 +226,7 @@ class DatabaseService {
     double longitude,
     String type,
     List<String> imagesURLs,
+    List amenities,
     String userName,
     String userRole,
     String userNumber,
@@ -235,7 +238,6 @@ class DatabaseService {
     String status,
   }) async {
     return await propertiesCollection.doc().set({
-      'title': title,
       'description': description,
       'numberBedrooms': numberBedrooms,
       'numberBathrooms': numberBathrooms,
@@ -257,6 +259,7 @@ class DatabaseService {
       'userEmail': userEmail,
       'userGender': userGender,
       'status': status,
+      'amenities': amenities,
     });
   }
 
@@ -264,7 +267,6 @@ class DatabaseService {
     return snapshot.docs.map((doc) {
       return Property(
         uid: doc.id,
-        title: doc.data()['title'] ?? '',
         area: doc.data()['area'] ?? '',
         district: doc.data()['district'] ?? '',
         governate: doc.data()['governate'] ?? '',
@@ -274,6 +276,7 @@ class DatabaseService {
         numBathrooms: doc.data()['numberBathrooms'] ?? 0,
         numBedrooms: doc.data()['numberBedrooms'] ?? 0,
         images: doc.data()['pictures'] ?? [],
+        amenities: doc.data()['amenities'] ?? [],
         price: doc.data()['price'] ?? 0,
         size: doc.data()['size'] ?? 0,
         propertyType: doc.data()['type'] ?? '',
@@ -293,7 +296,7 @@ class DatabaseService {
 
   Future<Compound> getCompound() async {
     DocumentSnapshot compoundDocument =
-        await compoundsCollection.doc('5DacnFTsw4QF3kRXSc4V').get();
+        await compoundsCollection.doc('7QqYYi9a8YxciQISpD9P').get();
     Compound compound = Compound(
       uid: compoundDocument.id,
       name: compoundDocument.data()['name'] ?? '',
@@ -303,6 +306,7 @@ class DatabaseService {
       latitude: compoundDocument.data()['latitude'] ?? 0,
       logoURL: compoundDocument.data()['logoURL'] ?? '',
       propertyTypes: compoundDocument.data()['unitTypes'] ?? [],
+      facilities: compoundDocument.data()['facilities'] ?? [],
       longitude: compoundDocument.data()['longitude'] ?? 0,
       images: compoundDocument.data()['pictures'] ?? [],
       meterPrice: compoundDocument.data()['meterPrice'] ?? 0,
@@ -478,40 +482,74 @@ class DatabaseService {
         : query.snapshots().map(_propertiesListFromSnapshot);
   }
 
-  Future updateRequestData(
-      {Property property, String date, UserData user}) async {
-    return await requestsCollection.doc().set({
-      'title': property.title,
-      'numberBedrooms': property.numBedrooms,
-      'numberBathrooms': property.numBathrooms,
-      'price': property.price,
-      'type': property.propertyType,
-      'pictures': property.images,
-      'latitude': property.latitude,
-      'longitude': property.longitude,
-      'governate': property.governate,
-      'district': property.district,
-      'area': property.area,
-      'size': property.size,
-      'listingType': property.listingType,
-      'agentName': property.agent.name,
-      'agentPic': property.agent.picURL,
-      'agentId': property.agent.uid,
-      'agentNumber': property.agent.phoneNumber,
-      'agentRole': property.agent.role,
-      'agentEmail': property.agent.email,
-      'agentGender': property.agent.gender,
-      'userName': user.name,
-      'userPic': user.picURL,
-      'userId': user.uid,
-      'userNumber': user.phoneNumber,
-      'userEmail': user.email,
-      'userGender': user.gender,
-      'status': 'pending',
-      'propertyId': property.uid,
-      'propertyStatus': property.status,
-      'date': date,
-    });
+  Future updateRequestData({
+    Property property,
+    String date,
+    UserData user,
+    Compound compound,
+  }) async {
+    if (compound == null) {
+      return await requestsCollection.doc().set({
+        'numberBedrooms': property.numBedrooms,
+        'numberBathrooms': property.numBathrooms,
+        'price': property.price,
+        'type': property.propertyType,
+        'pictures': property.images,
+        'latitude': property.latitude,
+        'longitude': property.longitude,
+        'governate': property.governate,
+        'district': property.district,
+        'area': property.area,
+        'size': property.size,
+        'listingType': property.listingType,
+        'agentName': property.agent.name,
+        'agentPic': property.agent.picURL,
+        'agentId': property.agent.uid,
+        'agentNumber': property.agent.phoneNumber,
+        'agentRole': property.agent.role,
+        'agentEmail': property.agent.email,
+        'agentGender': property.agent.gender,
+        'userName': user.name,
+        'userPic': user.picURL,
+        'userId': user.uid,
+        'userNumber': user.phoneNumber,
+        'userEmail': user.email,
+        'userGender': user.gender,
+        'status': 'pending',
+        'propertyId': property.uid,
+        'propertyStatus': property.status,
+        'date': date,
+      });
+    } else {
+      return await requestsCollection.doc().set({
+        'compoundID': compound.uid,
+        'logoURL': compound.logoURL,
+        'finishingType': compound.finishingType,
+        'name': compound.name,
+        'description': compound.description,
+        'startingPrice': compound.startingPrice,
+        'meterPrice': compound.meterPrice,
+        'paymentPlan': compound.paymentPlan,
+        'deliveryDate': compound.deliveryDate,
+        'propertyTypes': compound.propertyTypes,
+        'areasAndUnits': compound.areasAndUnits,
+        'pictures': compound.images,
+        'latitude': compound.latitude,
+        'longitude': compound.longitude,
+        'governate': compound.locationLevel1,
+        'district': compound.locationLevel2,
+        'compoundStatus': compound.status,
+        'highlighted': compound.highlighted,
+        'userName': user.name,
+        'userPic': user.picURL,
+        'userId': user.uid,
+        'userNumber': user.phoneNumber,
+        'userEmail': user.email,
+        'userGender': user.gender,
+        'status': 'pending',
+        'date': date,
+      });
+    }
   }
 
   List<Location> _areasListFromSnapshot(QuerySnapshot snapshot) {
@@ -562,31 +600,56 @@ class DatabaseService {
 
   List<Request> _appointmentRequestsListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
+      if (doc.data()['propertyId'] != null) {
+      } else {}
       return Request(
-        property: Property(
-          title: doc.data()['title'] ?? '',
-          uid: doc.data()['propertyId'] ?? '',
-          area: doc.data()['area'] ?? '',
-          district: doc.data()['district'] ?? '',
-          governate: doc.data()['governate'] ?? '',
-          latitude: doc.data()['latitude'] ?? 0,
-          listingType: doc.data()['listingType'] ?? 0,
-          longitude: doc.data()['longitude'] ?? 0,
-          numBathrooms: doc.data()['numberBathrooms'] ?? 0,
-          numBedrooms: doc.data()['numberBedrooms'] ?? 0,
-          images: doc.data()['pictures'] ?? [],
-          price: doc.data()['price'] ?? 0,
-          size: doc.data()['size'] ?? 0,
-          propertyType: doc.data()['type'] ?? '',
-          agent: UserData(
-            uid: doc.data()['agentId'] ?? '',
-            name: doc.data()['agentName'] ?? '',
-            phoneNumber: doc.data()['agentNumber'] ?? '',
-            picURL: doc.data()['agentPic'] ?? '',
-            role: doc.data()['agentRole'] ?? '',
-          ),
-          status: doc.data()['propertyStatus'] ?? '',
-        ),
+        property: doc.data()['propertyId'] != null
+            ? Property(
+                uid: doc.data()['propertyId'] ?? '',
+                area: doc.data()['area'] ?? '',
+                district: doc.data()['district'] ?? '',
+                governate: doc.data()['governate'] ?? '',
+                latitude: doc.data()['latitude'] ?? 0,
+                listingType: doc.data()['listingType'] ?? 0,
+                longitude: doc.data()['longitude'] ?? 0,
+                numBathrooms: doc.data()['numberBathrooms'] ?? 0,
+                numBedrooms: doc.data()['numberBedrooms'] ?? 0,
+                images: doc.data()['pictures'] ?? [],
+                price: doc.data()['price'] ?? 0,
+                size: doc.data()['size'] ?? 0,
+                propertyType: doc.data()['type'] ?? '',
+                agent: UserData(
+                  uid: doc.data()['agentId'] ?? '',
+                  name: doc.data()['agentName'] ?? '',
+                  phoneNumber: doc.data()['agentNumber'] ?? '',
+                  picURL: doc.data()['agentPic'] ?? '',
+                  role: doc.data()['agentRole'] ?? '',
+                ),
+                status: doc.data()['propertyStatus'] ?? '',
+              )
+            : null,
+        compound: doc.data()['compoundID'] != null
+            ? Compound(
+                uid: doc.data()['compoundID'] ?? '',
+                name: doc.data()['name'] ?? '',
+                description: doc.data()['description'] ?? '',
+                locationLevel2: doc.data()['district'] ?? '',
+                locationLevel1: doc.data()['governate'] ?? '',
+                logoURL: doc.data()['logoURL'] ?? '',
+                latitude: doc.data()['latitude'] ?? 0,
+                propertyTypes: doc.data()['unitTypes'] ?? [],
+                longitude: doc.data()['longitude'] ?? 0,
+                images: doc.data()['pictures'] ?? [],
+                meterPrice: doc.data()['meterPrice'] ?? 0,
+                areasAndUnits: doc.data()['areasAndUnits'] ?? '',
+                status: doc.data()['status'] ?? '',
+                highlighted: doc.data()['highlighted'] ?? false,
+                paymentPlan: doc.data()['paymentPlan'] ?? '',
+                deliveryDate: doc.data()['deliveryDate'] ?? '',
+                startingPrice: doc.data()['startingPrice'] ?? 0,
+                finishingType: doc.data()['finishingType'] ?? '',
+              )
+            : null,
         uid: doc.id,
         userId: doc.data()['userId'] ?? '',
         userName: doc.data()['userName'] ?? '',

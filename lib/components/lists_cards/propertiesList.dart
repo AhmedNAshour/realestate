@@ -53,12 +53,6 @@ class _PropertiesListState extends State<PropertiesList> {
     }
 
     if (widget.userFavorites == null) {
-      properties.sort((a, b) {
-        var aTitle = a.title; //before -> var adate = a.expiry;
-        var bTitle = b.title; //before -> var bdate = b.expiry;
-        return aTitle.compareTo(
-            bTitle); //to get the order other way just switch `adate & bdate`
-      });
       return ListView.builder(
         scrollDirection: widget.axis,
         itemCount: properties.length,

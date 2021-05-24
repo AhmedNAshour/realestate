@@ -21,50 +21,55 @@ class _DataHandlingState extends State<DataHandling> {
     Size size = MediaQuery.of(context).size;
     double height = size.height;
 
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            RoundedButton(
-                color: kPrimaryColor,
-                text: 'Properties',
-                press: () {
-                  Navigator.pushNamed(context, Listings.id);
-                }),
-            SizedBox(height: size.height * 0.02),
-            RoundedButton(
-                color: kPrimaryColor,
-                text: 'Compounds',
-                press: () {
-                  Navigator.pushNamed(context, CompoundsSearch.id);
-                }),
-            SizedBox(height: size.height * 0.02),
-            RoundedButton(
-                color: kPrimaryColor,
-                text: 'Locations',
-                press: () {
-                  Navigator.pushNamed(context, AdminAddGovernate.id);
-                }),
-            SizedBox(height: size.height * 0.02),
-            userData.role == 'admin'
-                ? RoundedButton(
-                    color: kPrimaryColor,
-                    text: 'Salesmen',
-                    press: () {
-                      Navigator.pushNamed(context, Salesmen.id);
-                    })
-                : Container(),
-            SizedBox(height: size.height * 0.02),
-            userData.role == 'admin'
-                ? RoundedButton(
-                    color: kPrimaryColor,
-                    text: 'Clients',
-                    press: () {
-                      Navigator.pushNamed(context, Clients.id);
-                    })
-                : Container(),
-          ],
+    return SafeArea(
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              RoundedButton(
+                  color: kPrimaryColor,
+                  text: 'Properties',
+                  press: () {
+                    Navigator.pushNamed(context, Listings.id);
+                  }),
+              SizedBox(height: size.height * 0.02),
+              RoundedButton(
+                  color: kPrimaryColor,
+                  text: 'Compounds',
+                  press: () {
+                    Navigator.pushNamed(context, CompoundsSearch.id,
+                        arguments: {
+                          'district': '',
+                        });
+                  }),
+              SizedBox(height: size.height * 0.02),
+              RoundedButton(
+                  color: kPrimaryColor,
+                  text: 'Locations',
+                  press: () {
+                    Navigator.pushNamed(context, AdminAddGovernate.id);
+                  }),
+              SizedBox(height: size.height * 0.02),
+              userData.role == 'admin'
+                  ? RoundedButton(
+                      color: kPrimaryColor,
+                      text: 'Salesmen',
+                      press: () {
+                        Navigator.pushNamed(context, Salesmen.id);
+                      })
+                  : Container(),
+              SizedBox(height: size.height * 0.02),
+              userData.role == 'admin'
+                  ? RoundedButton(
+                      color: kPrimaryColor,
+                      text: 'Clients',
+                      press: () {
+                        Navigator.pushNamed(context, Clients.id);
+                      })
+                  : Container(),
+            ],
+          ),
         ),
       ),
     );

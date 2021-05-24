@@ -13,6 +13,7 @@ import 'package:realestate/screens/shared/compound_info.dart';
 import 'package:realestate/screens/shared/compounds_search.dart';
 import 'package:realestate/screens/shared/listings.dart';
 import 'package:realestate/screens/shared/map.dart';
+import 'package:realestate/screens/shared/openMap.dart';
 import 'package:realestate/screens/shared/otherProfile.dart';
 import 'package:realestate/screens/shared/property_info.dart';
 import 'package:realestate/screens/shared/properties_search.dart';
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
             value: DatabaseService().governates),
       ],
       child: MaterialApp(
-        theme: ThemeData(fontFamily: 'Roboto'),
+        theme: ThemeData(fontFamily: 'Roboto', backgroundColor: Colors.white),
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
         routes: {
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
           Salesmen.id: (context) => Salesmen(),
           OtherProfile.id: (context) => OtherProfile(),
           MapSelect.id: (context) => MapSelect(),
+          MapOpen.id: (context) => MapOpen(),
           CompoundsSearch.id: (context) => CompoundsSearch(),
         },
       ),

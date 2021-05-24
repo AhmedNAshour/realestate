@@ -11,6 +11,7 @@ import 'package:realestate/constants.dart';
 import 'package:realestate/models/user.dart';
 import 'package:realestate/screens/shared/loading.dart';
 import 'package:realestate/services/database.dart';
+import 'openMap.dart';
 
 class PropertyInfo extends StatefulWidget {
   static const id = 'PropertyInfo';
@@ -32,6 +33,22 @@ class _PropertyInfoState extends State<PropertyInfo> {
   }
 
   bool isLiked = false;
+
+  Map amenities = {
+    'Balcony': FontAwesomeIcons.check,
+    'Built in Kitchen Appliances': FontAwesomeIcons.utensils,
+    'Security': FontAwesomeIcons.userShield,
+    'Covered Parking': FontAwesomeIcons.parking,
+    'Maids Room': FontAwesomeIcons.solidUser,
+    'Pets Allowed': FontAwesomeIcons.cat,
+    'Pool': FontAwesomeIcons.swimmingPool,
+    'Electricity Meter': FontAwesomeIcons.lightbulb,
+    'Water Meter': FontAwesomeIcons.water,
+    'Natural Gas': FontAwesomeIcons.gasPump,
+    'Landline': FontAwesomeIcons.phone,
+    'Elevator': FontAwesomeIcons.arrowUp,
+    'Private Garden': FontAwesomeIcons.leaf,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -74,32 +91,60 @@ class _PropertyInfoState extends State<PropertyInfo> {
                         top: height * 0.05,
                         right: width * 0.05,
                         child: userData.role != 'admin'
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(3000),
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    if (isLiked) {
-                                      userData.likes.remove(property.uid);
-                                      await DatabaseService(uid: user.uid)
-                                          .updateUserLikes(userData.likes);
-                                    } else {
-                                      userData.likes.add(property.uid);
-                                      await DatabaseService(uid: user.uid)
-                                          .updateUserLikes(userData.likes);
-                                    }
-                                  },
-                                  child: Container(
-                                    color: kPrimaryLightColor,
-                                    height: height * 0.05,
-                                    width: height * 0.05,
-                                    child: Icon(
-                                      isLiked
-                                          ? FontAwesomeIcons.solidHeart
-                                          : FontAwesomeIcons.heart,
-                                      color: kSecondaryColor,
+                            ? Row(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(3000),
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        Navigator.pushNamed(context, MapOpen.id,
+                                            arguments: {
+                                              'lat': property.latitude,
+                                              'long': property.longitude,
+                                            });
+                                      },
+                                      child: Container(
+                                        color: kPrimaryLightColor,
+                                        height: height * 0.05,
+                                        width: height * 0.05,
+                                        child: Icon(
+                                          FontAwesomeIcons.mapMarkedAlt,
+                                          color: kSecondaryColor,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
+                                  SizedBox(
+                                    width: width * 0.02,
+                                  ),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(3000),
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        if (isLiked) {
+                                          userData.likes.remove(property.uid);
+                                          await DatabaseService(uid: user.uid)
+                                              .updateUserLikes(userData.likes);
+                                        } else {
+                                          userData.likes.add(property.uid);
+                                          await DatabaseService(uid: user.uid)
+                                              .updateUserLikes(userData.likes);
+                                        }
+                                      },
+                                      child: Container(
+                                        color: kPrimaryLightColor,
+                                        height: height * 0.05,
+                                        width: height * 0.05,
+                                        child: Icon(
+                                          isLiked
+                                              ? FontAwesomeIcons.solidHeart
+                                              : FontAwesomeIcons.heart,
+                                          color: kSecondaryColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               )
                             : property.status != 'pending'
                                 ? Row(
@@ -137,7 +182,33 @@ class _PropertyInfoState extends State<PropertyInfo> {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(width: width * 0.04),
+                                      SizedBox(width: width * 0.02),
+                                      ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(3000),
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            Navigator.pushNamed(
+                                                context, MapOpen.id,
+                                                arguments: {
+                                                  'lat': property.latitude,
+                                                  'long': property.longitude,
+                                                });
+                                          },
+                                          child: Container(
+                                            color: kPrimaryLightColor,
+                                            height: height * 0.05,
+                                            width: height * 0.05,
+                                            child: Icon(
+                                              FontAwesomeIcons.mapMarkedAlt,
+                                              color: kSecondaryColor,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: width * 0.02,
+                                      ),
                                       ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(3000),
@@ -375,6 +446,54 @@ class _PropertyInfoState extends State<PropertyInfo> {
                                   height: height * 0.0001,
                                   color: kPrimaryTextColor,
                                 ),
+                                Text(
+                                  'Amenities',
+                                  style: TextStyle(
+                                    color: kPrimaryTextColor,
+                                    fontSize: size.height * 0.03,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Container(
+                                  height: size.height * 0.14,
+                                  child: GridView.builder(
+                                    padding: EdgeInsets.zero,
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      childAspectRatio:
+                                          size.height * 1.6 / size.width * 1.4,
+                                    ),
+                                    itemCount: property.amenities.length,
+                                    itemBuilder: (context, index) {
+                                      return property.amenities.isNotEmpty
+                                          ? Row(
+                                              children: [
+                                                Icon(amenities[
+                                                    property.amenities[index]]),
+                                                SizedBox(
+                                                    width: size.width * 0.02),
+                                                Text(
+                                                  property.amenities[index],
+                                                  style: TextStyle(
+                                                    color: kPrimaryTextColor,
+                                                    fontSize:
+                                                        size.height * 0.02,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          : Container();
+                                    },
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: height * 0.02),
+                                  height: height * 0.0001,
+                                  color: kPrimaryTextColor,
+                                ),
                                 userData.role == 'admin' ||
                                         userData.role == 'salesman'
                                     ? Text(
@@ -509,53 +628,81 @@ class _PropertyInfoState extends State<PropertyInfo> {
                 Positioned(
                   top: height * 0.05,
                   right: width * 0.05,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(3000),
-                    child: GestureDetector(
-                      onTap: () {
-                        if (user != null) {
-                        } else {
-                          showModalBottomSheet(
-                            context: context,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20.0),
-                                  topRight: Radius.circular(20.0)),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(3000),
+                        child: GestureDetector(
+                          onTap: () async {
+                            Navigator.pushNamed(context, MapOpen.id,
+                                arguments: {
+                                  'lat': property.latitude,
+                                  'long': property.longitude,
+                                });
+                          },
+                          child: Container(
+                            color: kPrimaryLightColor,
+                            height: height * 0.05,
+                            width: height * 0.05,
+                            child: Icon(
+                              FontAwesomeIcons.mapMarkedAlt,
+                              color: kSecondaryColor,
                             ),
-                            builder: (context) {
-                              return FractionallySizedBox(
-                                heightFactor: 0.9,
-                                child: DraggableScrollableSheet(
-                                  initialChildSize: 1.0,
-                                  maxChildSize: 1.0,
-                                  minChildSize: 0.25,
-                                  builder: (BuildContext context,
-                                      ScrollController scrollController) {
-                                    return StatefulBuilder(builder:
-                                        (BuildContext context,
-                                            StateSetter insideState) {
-                                      return LoginSignupModalBottomSheet(
-                                        modalBottomSheetState: insideState,
-                                      );
-                                    });
-                                  },
-                                ),
-                              );
-                            },
-                            isScrollControlled: true,
-                          );
-                        }
-                      },
-                      child: Container(
-                        color: kPrimaryLightColor,
-                        height: height * 0.05,
-                        width: height * 0.05,
-                        child: Icon(
-                          FontAwesomeIcons.heart,
-                          color: kSecondaryColor,
+                          ),
                         ),
                       ),
-                    ),
+                      SizedBox(
+                        width: width * 0.02,
+                      ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(3000),
+                        child: GestureDetector(
+                          onTap: () {
+                            if (user != null) {
+                            } else {
+                              showModalBottomSheet(
+                                context: context,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20.0),
+                                      topRight: Radius.circular(20.0)),
+                                ),
+                                builder: (context) {
+                                  return FractionallySizedBox(
+                                    heightFactor: 0.9,
+                                    child: DraggableScrollableSheet(
+                                      initialChildSize: 1.0,
+                                      maxChildSize: 1.0,
+                                      minChildSize: 0.25,
+                                      builder: (BuildContext context,
+                                          ScrollController scrollController) {
+                                        return StatefulBuilder(builder:
+                                            (BuildContext context,
+                                                StateSetter insideState) {
+                                          return LoginSignupModalBottomSheet(
+                                            modalBottomSheetState: insideState,
+                                          );
+                                        });
+                                      },
+                                    ),
+                                  );
+                                },
+                                isScrollControlled: true,
+                              );
+                            }
+                          },
+                          child: Container(
+                            color: kPrimaryLightColor,
+                            height: height * 0.05,
+                            width: height * 0.05,
+                            child: Icon(
+                              FontAwesomeIcons.heart,
+                              color: kSecondaryColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Align(
@@ -685,6 +832,46 @@ class _PropertyInfoState extends State<PropertyInfo> {
                                 EdgeInsets.symmetric(vertical: height * 0.02),
                             height: height * 0.0001,
                             color: kPrimaryTextColor,
+                          ),
+                          Text(
+                            'Amenities',
+                            style: TextStyle(
+                              color: kPrimaryTextColor,
+                              fontSize: size.height * 0.03,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Container(
+                            height: size.height * 0.14,
+                            child: GridView.builder(
+                              padding: EdgeInsets.zero,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio:
+                                    size.height * 1.6 / size.width * 1.4,
+                              ),
+                              itemCount: property.amenities.length,
+                              itemBuilder: (context, index) {
+                                return property.amenities.isNotEmpty
+                                    ? Row(
+                                        children: [
+                                          Icon(amenities[
+                                              property.amenities[index]]),
+                                          SizedBox(width: size.width * 0.02),
+                                          Text(
+                                            property.amenities[index],
+                                            style: TextStyle(
+                                              color: kPrimaryTextColor,
+                                              fontSize: size.height * 0.02,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : Container();
+                              },
+                            ),
                           ),
                         ],
                       ),
